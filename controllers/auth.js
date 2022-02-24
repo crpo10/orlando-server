@@ -35,7 +35,7 @@ const createUser = async ( req = request , res = response ) => {
   
     res.json({
       ok:true,
-      user,
+      usuario: user,
       token
     })
 
@@ -109,7 +109,7 @@ const renewToken = async (req, res) => {
 
   res.json({
     ok:true,
-    userDB,
+    usuario: userDB,
     token
   })
 
