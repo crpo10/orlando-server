@@ -15,10 +15,6 @@ const UserSchema= Schema({
     type:String,
     required:true
   },
-  online:{
-    type:Boolean,
-    default: false
-  },
 
 });
 
