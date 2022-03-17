@@ -4,23 +4,26 @@ const { check } = require('express-validator');
 const { createCar, updateCar, deleteCar, getCars } = require('../controllers/create_car');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { carExistById } = require('../database/db-validator');
+const { carExistById } = require('../middlewares/id-validator');
+const { validarBrand } = require('../middlewares/validar-brand');
 
 const router = Router();
 
-router.get('/cars', getCars);
+router.get('/', getCars);
 
-router.post('/newCar',[ 
-  check('brand','la marca del auto debe estar espeficiada').not().isEmpty(),  
+router.post('/',[ 
+  check('model','el modelo del auto debe estar espeficiado').not().isEmpty(),  
+  check('brand', 'No es un id valido').isMongoId(),
+  check('brand').custom( validarBrand ),
   validarCampos,
   validarJWT,
 ] , createCar);
 
 router.put('/:id', [
+  validarJWT,
   check('id', 'No es un id valido').isMongoId(),
   check('id').custom( carExistById ),
   validarCampos,
-  validarJWT
 ], updateCar);
 
 router.delete('/:id', [

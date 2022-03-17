@@ -11,7 +11,6 @@ const { check } = require('express-validator');
 const { createUser, login, renewToken } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { saveCar } = require('../controllers/create_car');
 
 const router = Router();
 

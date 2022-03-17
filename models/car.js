@@ -2,9 +2,9 @@ const { Schema , model } = require('mongoose');
 
 
 const CarSchema = Schema({
-
   brand:{
-    type:String,
+    type: Schema.Types.ObjectId,
+    ref:'Brand',
   },
   model:{
     type:String,
@@ -31,7 +31,8 @@ const CarSchema = Schema({
     type:String,
   },
   price:{
-    type:String,
+    type: Number,
+    default: 0,
   },
   comments:{
     type:String,
@@ -48,11 +49,11 @@ const CarSchema = Schema({
   },
 });
 
-CarSchema.method('toJSON', function() {
+CarSchema.methods.toJSON = function() {
   const { __v, _id,...object } = this.toObject();
   object.uid = _id;
   return object;
-})
+}
 
 module.exports = model('Car', CarSchema);
 

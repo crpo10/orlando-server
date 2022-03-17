@@ -1,10 +1,11 @@
 const { response, request } = require('express'); 
+const Brand = require('../models/brand');
 const Car = require('../models/car');
 
 
 const getCars = async ( req = request, res = response ) => {
 
-  const { limit = 5, from = 0 } = req.query; 
+  const { limit = 0, from = 0 } = req.query; 
   const query = {estado: true};
 
     const [ total , cars ] = await Promise.all([
@@ -28,10 +29,21 @@ const createCar =  async (req = request , res = response ) => {
 
   await car.save();
 
+  if(!car.brand) {
+    return res.status(400).json({
+      msg:`La categoria es obligatoria`
+    })
+  }
+
+
+  await Brand.findByIdAndUpdate( car.brand, {$push: { cars: car }} , { new: true } )
+
   res.json({
     ok:true,
     car: car,
   })
+
+
 
 }
 
@@ -40,8 +52,8 @@ const updateCar = async ( req = request, res = response) => {
 
   const { id } = req.params;
 
-  const { uid, ...resto } = req.body;
-  
+  const { uid,...resto } = req.body;
+
   const car = await Car.findByIdAndUpdate( id, resto );
 
   res.json(car)
@@ -50,7 +62,6 @@ const updateCar = async ( req = request, res = response) => {
 
 
 const deleteCar = async (req = request , res = response) => {
-
 
   const { id } = req.params;
 
