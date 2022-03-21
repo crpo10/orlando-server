@@ -43,7 +43,7 @@ const CarSchema = Schema({
   url_image:{
     type:String,
   },
-  estado:{
+  state:{
     type:Boolean,
     default:true,
   },

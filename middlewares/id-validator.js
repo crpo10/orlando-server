@@ -1,3 +1,4 @@
+const Brand = require('../models/brand');
 const Car = require('../models/car');
 
 
@@ -9,6 +10,17 @@ const carExistById = async ( id ) => {
   }
 }
 
+const brandExisteById = async ( id ) => {
+  
+  const existeBrand = await Brand.findById(id);
+  if (!existeBrand) {
+    throw new Error(`El id : ${ id } no existe `) 
+  }
+}
+
+
+
 module.exports = {
-  carExistById
+  carExistById,
+  brandExisteById,
 }

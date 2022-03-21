@@ -6,7 +6,7 @@ const Car = require('../models/car');
 const getCars = async ( req = request, res = response ) => {
 
   const { limit = 0, from = 0 } = req.query; 
-  const query = {estado: true};
+  const query = { state: true };
 
     const [ total , cars ] = await Promise.all([
       Car.countDocuments(query),
@@ -14,7 +14,6 @@ const getCars = async ( req = request, res = response ) => {
         .skip(Number(from))
         .limit(Number(limit))
     ]);
-
 
     res.json({
       total,
@@ -35,16 +34,12 @@ const createCar =  async (req = request , res = response ) => {
     })
   }
 
-
   await Brand.findByIdAndUpdate( car.brand, {$push: { cars: car }} , { new: true } )
 
   res.json({
     ok:true,
     car: car,
   })
-
-
-
 }
 
 const updateCar = async ( req = request, res = response) => {
@@ -65,7 +60,7 @@ const deleteCar = async (req = request , res = response) => {
 
   const { id } = req.params;
 
-  const car = await Car.findByIdAndUpdate( id, { estado: false } )
+  const car = await Car.findByIdAndUpdate( id, { state: false } )
 
   res.json(car)
 

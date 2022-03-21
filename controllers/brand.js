@@ -5,7 +5,7 @@ const Brand = require('../models/brand');
 
 // get brands
 const getBrands =  async (req, res ) => {
-  const query =  { estado: true  };
+  const query =  { state: true  };
 
   const [ total, brands ] = await Promise.all([
     Brand.countDocuments(query),
@@ -18,8 +18,10 @@ const getBrands =  async (req, res ) => {
   });
 
 }
+
 // get brand por id 
-const getBrandPorId = async (req, res) => { 
+const getBrandPorId = async (req, res) => {
+
   const { id } = req.params;
 
   const brand = await Brand.findById( id ).populate('cars');
@@ -59,13 +61,34 @@ const createBrand = async ( req = request, res = response) => {
 
 // update brand
 
+const updateBrand = async ( req, res ) => {
+  
+  const { id } = req.params;
 
+  const  name  = req.body;
+
+  const brand = await Brand.findByIdAndUpdate( id, name, { new: true } );
+
+  res.json(brand);
+
+}
 
 // delete brand
+const deleteBrand = async ( req, res ) => { 
+
+  const { id } = req.params;
+
+  const brand = Brand.findByIdAndUpdate(id, { state: false }, { new: true } );
+
+  res.json(brand);
+
+}
 
 
 module.exports = {
   getBrands,
   createBrand,
-  getBrandPorId
+  getBrandPorId,
+  updateBrand,
+  deleteBrand
 }
